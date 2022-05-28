@@ -4,7 +4,6 @@ namespace App\Core;
 
 class Application
 {
-
     public Route $route;
     public Request $request;
     public Response $response;

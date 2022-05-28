@@ -16,10 +16,4 @@ return new class {
                 PRIMARY KEY (`id`)
             )";
     }
-
-    public function down()
-    {
-        // do something
-    }
-  
 };
