@@ -6,28 +6,31 @@ use App\Core\Facades\Request;
 
 class Validator
 {
+    protected DB $db;
     protected array $rules = [];
+    protected array $attributes = [];
     protected array $errors = [];
 
     public function __construct()
     {
+        $this->db = new DB();
         foreach(Request::getBody() as $key => $value) 
-            $this->$key = $value;
+            $this->attributes[$key] = $value;
     }
 
     public function validate($rules)
     {
         foreach ($this->rules($rules) as $attribute => $rules) {
-            $value = $this->$attribute;
+            $value = $this->attributes[$attribute];
             foreach ($rules as $rule) {
                 @list($rule, $param) = explode(':', $rule);
                 $method = 'validate' . ucfirst($rule);
-                if (!$this->$method($value, $param)) {
+                if (!$this->$method($value, $param, $attribute)) {
                     $this->pushErrors($attribute, $rule, $param);
                 }
             }
         }
-        return $this->passes();
+        return $this->passes() ? true : redirect('back');
     }
 
     public function errors()
@@ -77,7 +80,12 @@ class Validator
 
     protected function validateSame($value, $field)
     {
-        return $value === $this->$field;
+        return $value === $this->attributes[$field];
+    }
+    
+    protected function validateUnique($value, $table, $attribute)
+    {
+        return !$this->db->query("SELECT * FROM `{$table}` WHERE `$attribute` = '$value' ")->rowCount();
     }
 
     protected function rules($rules)
@@ -100,7 +108,7 @@ class Validator
             [$this->beautify($attribute), $param, $this->beautify($param)],
             $message
         );
-        $_SESSION['errors'] = $this->errors;
+       session()->flash('errors', $this->errors);
     }
 
     protected function beautify($attribute)

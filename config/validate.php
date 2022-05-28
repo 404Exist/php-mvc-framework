@@ -6,5 +6,6 @@ return [
     'min' => 'The :attribute field must be more than :min.',
     'min' => 'The :attribute field must be equal or more than :min.',
     'email' => 'The :attribute field must be a valid email.',
+    'unique' => 'Record with this :attribute already exists.',
     'string' => 'The :attribute field must be a string.',
 ];

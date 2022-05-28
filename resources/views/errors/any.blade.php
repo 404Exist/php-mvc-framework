@@ -1,9 +1,8 @@
-<?php class_exists('App\Core\View') or exit; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>404 Page</title>
+<title>{{ $error->getCode() }} Page</title>
 
 <link rel="dns-prefetch" href="//fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
@@ -48,9 +47,9 @@
 <body>
 <div class="flex-center position-relative h-full">
 <div class="code">
-404 </div>
+{{ $error->getCode() }} </div>
 <div class="message" style="padding: 10px;">
-Page Not Found!! </div>
+{{ $error->getMessage() }} </div>
 </div>
 </body>
 </html>

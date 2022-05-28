@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <title>
-  Home
+    Home
 </title>
   </head>
   <body>
@@ -30,19 +30,22 @@
             </li>
           </ul>
           <ul class="navbar-nav mb-2 mb-lg-0 ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/register">Register</a>
-            </li>
+            
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+              </li>
+            
+            
           </ul>
         </div>
       </div>
     </nav>
     <div class="container mt-4">
       
-    <h1><?php echo htmlentities($message, ENT_QUOTES, 'UTF-8') ?> asdasd</h1>
+    <h1><?php echo htmlentities(session()->get('success'), ENT_QUOTES, 'UTF-8') ?></h1>
 
     </div>
     <!-- Optional JavaScript; choose one of the two! -->

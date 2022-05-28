@@ -27,12 +27,22 @@
             </li>
           </ul>
           <ul class="navbar-nav mb-2 mb-lg-0 ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/register">Register</a>
-            </li>
+            @guest
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+              </li>
+            @endguest
+            @auth
+              <li class="nav-item">
+                <a class="nav-link" href="/profile">Welcome {{ auth()->user()->firstname }}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+              </li>
+            @endauth
           </ul>
         </div>
       </div>

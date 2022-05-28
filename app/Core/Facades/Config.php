@@ -2,7 +2,7 @@
 
 namespace App\Core\Facades;
 
-use App\Core\Facade;
+use App\Core\Support\Facade;
 
 class Config extends Facade
 {

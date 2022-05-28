@@ -2,12 +2,12 @@
 
 namespace App\Core\Facades;
 
-use App\Core\Facade;
+use App\Core\Support\Facade;
 
-class Database extends Facade
+class Auth extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \App\Core\Database::class;
+        return \App\Core\Support\Auth::class;
     }
 }

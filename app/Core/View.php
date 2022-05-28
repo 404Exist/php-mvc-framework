@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Core\Support\TemplateEngine;
+
 class View
 {
     protected $cache_path;
@@ -25,14 +27,8 @@ class View
 
     protected function cache($file)
     {
-        if (!file_exists($this->cache_path)) {
-            mkdir($this->cache_path, 0744);
-        }
-
-        if ($this->shouldCreate($file)) {
-            $this->create($file);
-        }
-
+        if (!file_exists($this->cache_path)) mkdir($this->cache_path, 0744);
+        if ($this->shouldCreate($file)) $this->create($file);
     }
 
     protected function shouldCreate($file)

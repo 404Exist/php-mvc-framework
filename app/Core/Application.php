@@ -8,7 +8,8 @@ class Application
     public Route $route;
     public Request $request;
     public Response $response;
-    public Database $db;
+    public Session $session;
+    public DB $db;
     public static Application $app;
 
     public function __construct()
@@ -16,13 +17,20 @@ class Application
         self::$app = $this;
         $this->request = new Request();
         $this->response = new Response();
+        $this->session = new Session();
         $this->route = new Route($this->request, $this->response);
 
-        $this->db = new Database();
+        $this->db = new DB();
     }
 
     public function run()
     {
-        echo $this->route->resolve();
-    }
+        try {
+            session_start(); 
+            echo $this->route->resolve();
+            $this->session->unsetFlashes();
+        } catch (\Exception $e) {
+            return view('errors.any', ['error' => $e]);
+        }
+    }   
 }

@@ -1,6 +1,6 @@
 <?php
 use App\Core\Application;
-use App\Core\DotEnv;
+use App\Core\Support\DotEnv;
 
 require_once __DIR__ . '/vendor/autoload.php';
 

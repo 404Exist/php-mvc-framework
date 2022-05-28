@@ -2,9 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Core\Controller;
 use App\Core\Request;
 
-class ContactController
+class ContactController extends Controller
 {
     public function index()
     {

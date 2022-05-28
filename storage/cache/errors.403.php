@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>404 Page</title>
+<title>403 Page</title>
 
 <link rel="dns-prefetch" href="//fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
@@ -48,9 +48,9 @@
 <body>
 <div class="flex-center position-relative h-full">
 <div class="code">
-404 </div>
+403 </div>
 <div class="message" style="padding: 10px;">
-Page Not Found!! </div>
+You Don't Have Permission To Access This Page!! </div>
 </div>
 </body>
 </html>

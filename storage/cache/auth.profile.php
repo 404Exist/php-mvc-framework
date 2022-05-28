@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <title>
-  Contact
+  <?php echo htmlentities(auth()->user()->firstname, ENT_QUOTES, 'UTF-8') ?> Profile
 </title>
   </head>
   <body>
@@ -45,21 +45,8 @@
     </nav>
     <div class="container mt-4">
       
-<form method="POST">
-  <div class="mb-3">
-    <label for="subject" class="form-label">Subject</label>
-    <input type="text" class="form-control" id="subject" name="subject">
-  </div>
-  <div class="mb-3">
-    <label for="email" class="form-label">Email</label>
-    <input type="email" class="form-control" id="email" name="email">
-  </div>
-  <div class="mb-3">
-    <label for="body" class="form-label">Body</label>
-    <textarea class="form-control" id="body" name="body"></textarea>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<h1><?php echo htmlentities(session()->get('success'), ENT_QUOTES, 'UTF-8') ?></h1>
+<h1><?php echo htmlentities(auth()->user()->firstname, ENT_QUOTES, 'UTF-8') ?> Profile</h1>
 
     </div>
     <!-- Optional JavaScript; choose one of the two! -->
@@ -74,4 +61,5 @@
     -->
   </body>
 </html>
+
 

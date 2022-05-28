@@ -35,6 +35,7 @@ class Request
         if ($this->method() === 'POST') {
             foreach ($_POST as $key => $value) {
                 $this->{$key} = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+                session()->flash($key, $this->$key);
             }
         } else {
             foreach ($_GET as $key => $value) {
@@ -42,6 +43,11 @@ class Request
             }
         }
         return $this;
+    }
+
+    public function get($key)
+    {
+        return $this->$key;
     }
 
     public function all()

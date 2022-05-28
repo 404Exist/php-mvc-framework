@@ -1,6 +1,6 @@
 <?php
 use App\Core\Application;
-use App\Core\DotEnv;
+use App\Core\Support\DotEnv;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -15,5 +15,7 @@ $app->route->get('/login', [\App\Controllers\AuthController::class, 'login']);
 $app->route->post('/login', [\App\Controllers\AuthController::class, 'login']);
 $app->route->get('/register', [\App\Controllers\AuthController::class, 'register']);
 $app->route->post('/register', [\App\Controllers\AuthController::class, 'register']);
+$app->route->get('/logout', [\App\Controllers\AuthController::class, 'logout']);
+$app->route->get('/profile', [\App\Controllers\AuthController::class, 'profile']);
 
 $app->run();

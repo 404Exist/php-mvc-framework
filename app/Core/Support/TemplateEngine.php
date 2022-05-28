@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Core;
+namespace App\Core\Support;
 
 class TemplateEngine
 {
     protected $sections = [];
+    protected $views_path = __DIR__ . "/../../../resources/views/";
 
     public function compile($code)
     {
@@ -12,6 +13,8 @@ class TemplateEngine
         $code = $this->section($code);
         $code = $this->yield($code);
         $code = $this->error($code);
+        $code = $this->auth($code);
+        $code = $this->guest($code);
         $code = $this->comment($code);
         $code = $this->echos($code);
         $code = $this->escapedEchos($code);
@@ -31,7 +34,7 @@ class TemplateEngine
     {
         $file = preg_replace('/\\\|\./', '/', $file);
         $file = preg_replace('/\"|\'/', '', $file);
-        return __DIR__ . "/../../resources/views/$file.blade.php";
+        return "{$this->views_path}$file.blade.php";
     }
 
     protected function fileContent($view)
@@ -41,7 +44,7 @@ class TemplateEngine
             return file_get_contents($file);
         }
 
-        throw new \Exception('View not found');
+        throw new \Exception("$view view not found", 404);
     }
 
     protected function section($code)
@@ -70,12 +73,37 @@ class TemplateEngine
     protected function error($code)
     {
         preg_match_all('/@error\((.*?)\)(.*?)@enderror/is', $code, $errors, PREG_SET_ORDER);
+        $sessionMessages = session()->get('errors');
         foreach ($errors as $error) {
-            $errorMessage = @str_replace('$message', $_SESSION['errors'][str_replace("'", '', $error[1])][0], $error[2]);
+            $key = str_replace("'", '', $error[1]);
+            $errorMessage = @$sessionMessages[$key][0] ? str_replace('$message', $sessionMessages[$key][0], $error[2]) : "";
             $code = str_replace($error[0], $errorMessage, $code);
         }
         return $code;
     }
+    protected function auth($code)
+    {
+        preg_match_all('/@auth(.*?)@endauth/is', $code, $auths, PREG_SET_ORDER);
+        foreach ($auths as $auth) {
+            $content = "";
+            if (auth()->user()) $content = $auth[1];
+            $code = str_replace($auth[0], $content, $code);
+        }
+        return $code;
+    }
+
+    protected function guest($code)
+    {
+        preg_match_all('/@guest(.*?)@endguest/is', $code, $guests, PREG_SET_ORDER);
+        foreach ($guests as $guest) {
+            $content = "";
+            if (auth()->guest()) $content = $guest[1];
+            $code = str_replace($guest[0], $content, $code);
+            
+        }
+        return $code;
+    }
+
     protected function echos($code)
     {
         return preg_replace('~\{!!\s*(.+?)\s*\!!}~is', '<?php echo $1 ?>', $code);

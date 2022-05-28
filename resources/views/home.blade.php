@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('title')
-  Home
+    Home
 @endsection
 
 @section('content')
-    <h1>{{ $message }} asdasd</h1>
+    <h1>{{ session()->get('success') }}</h1>
 @endsection

@@ -36,12 +36,14 @@ class Route
         if (is_string($callback)) {
             return view($callback);
         }
-
         if (is_array($callback)) {
             $callback[0] = new $callback[0];
         }
-
-        return call_user_func($callback, $this->request->getBody());
+        $next = function() use ($callback) {$callback[0]->{$callback[1]}($this->request->getBody());};
+        foreach ($callback[0]->getMiddleware() as $middleware) {
+            if ($middleware->willApplyTo($callback[1])) return $middleware->handle($next);
+        }
+        return $next();
     }
 
 }
