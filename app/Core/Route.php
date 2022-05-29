@@ -26,24 +26,16 @@ class Route
 
     public function resolve()
     {
-        $path = $this->request->getPath();
-        $method = $this->request->method();
-        $callback = $this->routes[$method][$path] ?? false;
-        if ($callback === false) {
-            $this->response->setStatusCode(404);
-            return view('errors.404');
-        }
-        if (is_string($callback)) {
-            return view($callback);
-        }
+        $callback = $this->routes[$this->request->method()][$this->request->getPath()] ?? false;
+        if ($callback === false) return abort(404);
+        if (is_string($callback)) return view($callback);
         if (is_array($callback)) {
             $callback[0] = new $callback[0];
+            foreach ($callback[0]->getMiddleware() as $middleware) {
+                if ($middleware->willApplyTo($callback[1])) return $middleware->handle(function() use ($callback) {call_user_func($callback, $this->request->getBody());});
+            }
         }
-        $next = function() use ($callback) {$callback[0]->{$callback[1]}($this->request->getBody());};
-        foreach ($callback[0]->getMiddleware() as $middleware) {
-            if ($middleware->willApplyTo($callback[1])) return $middleware->handle($next);
-        }
-        return $next();
+        return call_user_func($callback, $this->request->getBody());
     }
 
 }

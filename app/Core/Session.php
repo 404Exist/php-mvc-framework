@@ -31,10 +31,7 @@ class Session
 
     public function get($key, $default = false)
     {
-        $value = $this->getValueOrDefault(@$_SESSION[explode('.', $key)[0]]) ?? $this->getValueOrDefault(@$_SESSION[self::FLASH_KEY][explode('.', $key)[0]], $default);
-        $keys = array_slice(explode('.', $key), 1);
-        foreach ($keys as $arrKey) $value = @$value[$arrKey];
-        return $value;
+        return $this->getNestedValueOrDefault($key, $default);
     }
 
     public function flush()
@@ -50,9 +47,23 @@ class Session
         return $this;
     }
 
-    protected function getValueOrDefault($value, $default = null)
+    protected function getNestedValueOrDefault($key, $default = false)
     {
-        return isset($value) ? $value : $default; 
+        $value = $this->getValueOrDefault($key, $default);
+        $keys = array_slice(explode('.', $key), 1);
+        foreach ($keys as $arrKey) {
+            if (is_array($value)) $value = $value[$arrKey] ?? $default;
+            else $value = $value->$arrKey ?? $default;
+        }
+        return $value;
+    }
+
+    protected function getValueOrDefault($key, $default)
+    {
+        $key = explode('.', $key)[0];
+        if (isset($_SESSION[$key])) return $_SESSION[$key];
+        if (isset($_SESSION[self::FLASH_KEY][$key]))  return $_SESSION[self::FLASH_KEY][$key];
+        return $default;
     }
 
 }

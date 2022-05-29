@@ -15,7 +15,7 @@ class Auth
         if ($user) {
             if (password_verify($credentials['password'], $user->password)) session()->set('user', $user);
         }
-        $this->user() ?: session()->flash('errors', ['password' => ['Invalid credentials']]) && redirect('back');
+        $this->check() ?: session()->flash('errors', ['password' => ['Invalid credentials']]) && redirect('back');
         return $this;
     }
 

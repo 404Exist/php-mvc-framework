@@ -31,13 +31,13 @@
           </ul>
           <ul class="navbar-nav mb-2 mb-lg-0 ml-auto">
             
-              <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/register">Register</a>
-              </li>
             
+              <li class="nav-item">
+                <a class="nav-link" href="/profile">Welcome <?php echo htmlentities(auth()->user()->firstname, ENT_QUOTES, 'UTF-8') ?></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+              </li>
             
           </ul>
         </div>

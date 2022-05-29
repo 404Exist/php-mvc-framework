@@ -17,17 +17,17 @@ trait QueryBuilder
 
     public function create($data = [])
     {
-        return $this->execQueryByMethod('insert', $data);
+        return $this->execQueryByAction('insert', $data);
     }
 
     public function update($data = [])
     {
-        return $this->execQueryByMethod('update', $data);
+        return $this->execQueryByAction('update', $data);
     }
 
     public function delete(...$primaryKeyValues)
     {
-        if (count($primaryKeyValues)) $this->whereIn($this->primaryKey, $primaryKeyValues);
+        $this->whereIn($this->primaryKey, $primaryKeyValues);
         return $this->execQuery("DELETE FROM `{$this->getTable()}`{$this->whereString}");
     }
 
@@ -86,7 +86,7 @@ trait QueryBuilder
 
     public function firstOrFail()
     {
-        return $this->fetch() ?: throw new \Exception("Page Not Found!!", 404);;
+        return $this->fetch() ?: abort(404);
     }
 
     public function get()
@@ -140,11 +140,11 @@ trait QueryBuilder
         return "SELECT $columns FROM `{$this->getTable()}`{$this->whereString}";
     }
 
-    protected function execQueryByMethod($method, $data = [])
+    protected function execQueryByAction($action, $data = [])
     {
         $this->fill($data);
-        $this->execQuery($this->{$method."Query"}());
-        return $this->find($method == "insert" ? $this->db->lastInsertId() : $this->getPrimaryKeyValue());
+        $this->execQuery($this->{$action."Query"}());
+        return $this->find($action == "insert" ? $this->db->lastInsertId() : $this->getPrimaryKeyValue());
     }
 
     protected function execQuery($query)
